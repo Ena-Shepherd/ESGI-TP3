@@ -28,7 +28,7 @@ Livre *create_book(Livre **livre) { //allocation de la mémoire sur la structure
 void change_value_of(Livre *livre, char* param) {
 
     char *arg = malloc(sizeof(char) * 15); //le paramètre à changer
-    char *value = malloc(sizeof(char) * 200); //sa valeur
+    char *value = malloc(sizeof(char) * strlen(param)); //sa valeur
     int j = 0;
     int k = 0;
 
@@ -36,7 +36,7 @@ void change_value_of(Livre *livre, char* param) {
         arg[j] = param[j];
     }
     j++;
-    for (; param[j] != 0; j++, k++) { //bloc de parsing pour savoir quel paramètre va être modifié/ajouté
+    for (; param[j] != '\0'; j++, k++) { //bloc de parsing pour savoir quel paramètre va être modifié/ajouté
         value[k] = param[j];
     }
 
@@ -79,9 +79,11 @@ void display(Livre *livre, ...) { // "..." est un attribut elliptique
     va_end(args); //fin liste
 }
 
-
 int main(void)
-{
+{  
+    //fix du buffer windows printf qui est buggé :)
+    setbuf(stdout, NULL); //retirez cette ligne et des merdes random apparaîtront dans le powershell
+
     Livre *harry_potter = NULL;
     create_book(&harry_potter);
 
@@ -98,11 +100,15 @@ int main(void)
 
     change_value_of(les_3_mousquetaires, "author, Alexandre Dumas");
     change_value_of(les_3_mousquetaires, "name, Les Trois Mousquetaires");
+    change_value_of(les_3_mousquetaires, "editor, Moulin Rouge");
+    change_value_of(les_3_mousquetaires, "barcode, 033457");
 
     //argument optionnel : 1 - titre, 2 - auteur, etc...
     display(les_3_mousquetaires, 1);
     display(les_3_mousquetaires, 2);
+    display(les_3_mousquetaires, 3);
     printf("\n");
+    
 
     return 0;
 }
