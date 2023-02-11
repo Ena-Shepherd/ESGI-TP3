@@ -14,7 +14,7 @@
 typedef double* PtrTableauDouble;
 
 void TableauDouble_construire(PtrTableauDouble *dd, const unsigned taille) {
-    *dd = malloc(sizeof(PtrTableauDouble));
+    *dd = malloc(sizeof(double) * taille);
 }
 
 void TableauDouble_afficher (const PtrTableauDouble dd, const unsigned taille) {
@@ -44,9 +44,9 @@ void TableauDouble_set(PtrTableauDouble dd, const unsigned taille, const unsigne
 }
 
 int C_1() {
-    
+
     PtrTableauDouble d1 = NULL;
-    unsigned t1=5;
+    unsigned t1 = 5;
 
     TableauDouble_construire(&d1,t1);
     TableauDouble_afficher(d1,t1);
@@ -57,8 +57,9 @@ int C_1() {
     printf("%5.10f\n",TableauDouble_get(d1,t1,2));
     TableauDouble_afficher(d1,t1);
     TableauDouble_liberer(&d1);
-    printf("\nlà on va segfault si les choses sont bien faites :\n");
+    printf("\nlà on va segfault si les choses sont bien faites :\nRead sur une adresse free'd est la pire idée possible\n\n");
     TableauDouble_afficher(d1,t1);
+
     return 0;
 }
 
